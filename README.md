@@ -7,7 +7,7 @@ Each declared instance gets:
 - a `home-manager-mihomo-manager-<name>` systemd user service running Mihomo with a
   config merged by [MihomoManager.MihomoMixin](https://github.com/MihomoManager/MihomoManager.MihomoMixin);
 - a `home-manager-mihomo-manager` CLI (built on [sub](https://github.com/juanibiapina/sub)) with
-  `restart`, `log`, `tui`, `with`, and `info` actions, plus dynamic bash completion.
+  `restart`, `log`, `tui`, `with`, and `show` actions, plus dynamic bash completion.
 
 ## Adding as a flake input
 
@@ -67,7 +67,7 @@ home-manager-mihomo-manager restart <name>         systemctl --user restart home
 home-manager-mihomo-manager log <name>             journalctl --user -uf home-manager-mihomo-manager-<name>
 home-manager-mihomo-manager tui <name>             mihomo-tui -c <state>/home-manager-mihomo-manager/state/<name>/tui/config.yaml
 home-manager-mihomo-manager with <name> <cmd...>   run <cmd...> with proxy env vars set
-home-manager-mihomo-manager info <name>            print port, config dir, and state dir
+home-manager-mihomo-manager show <name>            print port, config dir, and state dir
 ```
 
 ---

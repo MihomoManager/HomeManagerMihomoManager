@@ -8,10 +8,7 @@
 let
   cfg = config.programs.home-manager-mihomo-manager;
 
-  # --- command tree (action-first) -> libexec tree -----------------
-  # Every action is a directory of per-instance executables, so the CLI is
-  # `home-manager-mihomo-manager <action> <name>` and completion falls out of the tree.
-  actions = name: {
+  commands = name: {
     restart = ''
       #!/usr/bin/env bash
       systemctl --user restart "home-manager-mihomo-manager-${name}"
@@ -45,34 +42,12 @@ let
       printf "State Directory: %s\n" "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}"
     '';
   };
-
-  allScripts = lib.concatMap (
-    name:
-    lib.mapAttrsToList (
-      action: text: {
-        path = "${action}/${name}";
-        file = pkgs.writeTextFile {
-          name = "home-manager-mihomo-manager-${action}-${name}";
-          inherit text;
-          executable = true;
-        };
-      }
-    ) (actions name)
-  ) (builtins.attrNames cfg.instances);
-
-  libexecTree = pkgs.runCommand "home-manager-mihomo-manager-libexec" { } (
-    lib.concatMapStringsSep "\n" (
-      script: ''
-        install -Dm755 '${script.file}' "$out/libexec/${script.path}"
-      ''
-    ) allScripts
-  );
 in
 {
   options.programs.home-manager-mihomo-manager = {
     enable = lib.mkEnableOption "MihomoManager proxy instances";
 
-    mixin = lib.mkOption {
+    mihomo-manager-mihomo-mixin = lib.mkOption {
       type = lib.types.package;
       default = pkgs.callPackage ../packages/mihomo-manager-mihomo-mixin { };
       description = ''
@@ -122,13 +97,24 @@ in
       enable = true;
       clis.home-manager-mihomo-manager = {
         version = "0.1.0";
-        scripts = libexecTree;
+        scripts = pkgs.runCommand "home-manager-mihomo-manager-sub" { } (
+          lib.concatMapStringsSep "\n" (
+            name:
+            lib.concatMapAttrsStringSep "\n" (action: text: ''
+              mkdir -p "$out/libexec/${action}"
+              cat > "$out/libexec/${action}/${name}" <<'EOF'
+              ${text}
+              EOF
+              chmod +x "$out/libexec/${action}/${name}"
+            '') (commands name)
+          ) (builtins.attrNames cfg.instances)
+        );
       };
     };
 
     home.packages = [
       pkgs.mihomo
-      cfg.mixin
+      cfg.mihomo-manager-mihomo-mixin
       cfg.mihomo-tui
     ];
 
@@ -182,14 +168,14 @@ in
           cd "${config.xdg.configHome}/home-manager-mihomo-manager/${name}"
           mkdir -p "/tmp/config-sh"
           mkdir -p "$STATE_DIRECTORY/config-sh"
-          MMMM="${cfg.mixin}/bin/MihomoManager.MihomoMixin" \
+          MMMM="${cfg.mihomo-manager-mihomo-mixin}/bin/MihomoManager.MihomoMixin" \
             OUTPUT_PATH="/tmp/merged.yaml" \
             TEMP_DIRECTORY="/tmp/config-sh" \
             STATE_DIRECTORY="$STATE_DIRECTORY/config-sh" \
             bash config.sh
 
           mkdir -p "$STATE_DIRECTORY/core"
-          "${cfg.mixin}/bin/MihomoManager.MihomoMixin" merge /tmp/merged.yaml merge "${portYaml}" save "$STATE_DIRECTORY/core/config.yaml"
+          "${cfg.mihomo-manager-mihomo-mixin}/bin/MihomoManager.MihomoMixin" merge /tmp/merged.yaml merge "${portYaml}" save "$STATE_DIRECTORY/core/config.yaml"
 
           SOCKET="$RUNTIME_DIRECTORY/mihomo.sock"
 
