@@ -61,11 +61,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1789732162,
-        "narHash": "sha256-u6a9dg0wqftEMGIMRqNVJav+i7NezJgS/QC2Zt5o9FU=",
+        "lastModified": 1789814462,
+        "narHash": "sha256-qYtQgVThMbz9M7Ou56rIhAsHJljXeEiz4n71CPrbGcg=",
         "owner": "yueyinqiu",
         "repo": "SubNix",
-        "rev": "92403706549e584a397d2ab448715a82da9432ff",
+        "rev": "edfdbb2fc967bc131983276c6c83335dc101fe2a",
         "type": "github"
       },
       "original": {
