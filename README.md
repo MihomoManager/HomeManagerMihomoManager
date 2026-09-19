@@ -59,6 +59,49 @@ Each `instances.<name>` accepts:
 | `configuration` | path | Directory copied into `~/.config/home-manager-mihomo-manager/<name>` |
 | `entry` | str | Generation script inside `configuration`, defaults to `config.sh` |
 
+## Configuration
+
+Each instance's `configuration` directory is copied to
+`~/.config/home-manager-mihomo-manager/<name>`. At service startup, the
+`entry` script (default `config.sh`) is run from that directory (with the
+instance's own files as the working directory) to generate the Mihomo
+configuration.
+
+The entry script is invoked as `bash <entry>` and receives these
+environment variables:
+
+| Name | Description |
+| --- | --- |
+| `MMMM` | The `MihomoManager.MihomoMixin` binary |
+| `OUTPUT_PATH` | Where to write the generated configuration |
+| `TEMP_DIRECTORY` | Temporary files, cleaned up after the service stops |
+| `STATE_DIRECTORY` | Persistent files, retained across runs |
+| `HOME_MANAGER_MIHOMO_MANAGER_PROXIES` | Generated YAML listing all managed instances as socks5 proxies |
+
+A minimal `config.sh`:
+
+```sh
+#!/usr/bin/env bash
+
+# "$MMMM" for the MihomoManager.MihomoMixin binary
+# "$OUTPUT_PATH" for writing the final merged configuration
+# "$TEMP_DIRECTORY" for temporary files
+# "$STATE_DIRECTORY" for persistent files
+# "$HOME_MANAGER_MIHOMO_MANAGER_PROXIES" for the generated list of managed proxy instances
+# . for the instance's own configuration files
+
+origin="$STATE_DIRECTORY/origin.yaml"
+if [ -z "$(find "$origin" -mtime -30)" ]; then
+    curl -L -H "User-Agent: flclash" --output "$origin" https://example.com/subscription
+fi
+
+"$MMMM" \
+    merge "$origin" \
+    merge "$HOME_MANAGER_MIHOMO_MANAGER_PROXIES" \
+    js to-global.js \
+    save "$OUTPUT_PATH"
+```
+
 ## CLI
 
 ```

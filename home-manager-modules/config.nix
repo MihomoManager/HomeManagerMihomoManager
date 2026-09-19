@@ -54,7 +54,7 @@ in
           cd "${config.xdg.configHome}/home-manager-mihomo-manager/${name}"
           mkdir -p "/tmp/entry"
           mkdir -p "$STATE_DIRECTORY/entry"
-          PROXIES_LIST="${proxiesList}" \
+          HOME_MANAGER_MIHOMO_MANAGER_PROXIES="${proxiesList}" \
             MMMM="${cfg.mihomo-manager-mihomo-mixin}/bin/MihomoManager.MihomoMixin" \
             OUTPUT_PATH="/tmp/merged.yaml" \
             TEMP_DIRECTORY="/tmp/entry" \
