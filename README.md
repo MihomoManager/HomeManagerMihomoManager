@@ -98,14 +98,43 @@ A minimal `config.sh`:
 
 origin="$STATE_DIRECTORY/origin.yaml"
 if [ -z "$(find "$origin" -mtime -30)" ]; then
-    curl -L -H "User-Agent: flclash" --output "$origin" https://example.com/subscription
+  curl -L -H "User-Agent: flclash" --output "$origin" https://example.com/subscription
 fi
 
 "$MMMM" \
-    merge "$origin" \
-    merge "$HOME_MANAGER_MIHOMO_MANAGER_PROXIES" \
-    js to-global.js \
-    save "$OUTPUT_PATH"
+  merge "$origin" \
+  merge "$HOME_MANAGER_MIHOMO_MANAGER_PROXIES" \
+  js ./modify.js \
+  save "$OUTPUT_PATH"
+```
+
+`HOME_MANAGER_MIHOMO_MANAGER_PROXIES` points to a Mihomo config fragment
+declaring every managed instance as a socks5 proxy named
+`home-manager-mihomo-manager-<name>` (with `server: 127.0.0.1` and the
+instance's `port`). For two instances it contains:
+
+```yaml
+proxies:
+  - name: home-manager-mihomo-manager-a
+    type: socks5
+    server: 127.0.0.1
+    port: 42931
+  - name: home-manager-mihomo-manager-b
+    type: socks5
+    server: 127.0.0.1
+    port: 58731
+```
+
+Merge it (as in the example above) to route this instance's traffic through
+another instance by referencing those names, e.g. a proxy group selecting
+`home-manager-mihomo-manager-b`:
+
+```yaml
+proxy-groups:
+  - name: GLOBAL
+    type: select
+    proxies:
+      - home-manager-mihomo-manager-b
 ```
 
 ## CLI
