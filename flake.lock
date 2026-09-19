@@ -2,16 +2,14 @@
   "nodes": {
     "mihomo-manager-mihomo-mixin": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1789732146,
-        "narHash": "sha256-ZPk4me6AXXelmGZxScJ2GtSRmkzMiZ9lvBjvQrOpwto=",
+        "lastModified": 1789739359,
+        "narHash": "sha256-6nSirTM6g05RtRmiajDKSHK2KQWdroOVLCFd++l3h9g=",
         "owner": "MihomoManager",
         "repo": "MihomoManager.MihomoMixin-Nix",
-        "rev": "96f137c9f0b35bc68e521449dd7aa511e69d4490",
+        "rev": "daa6735c1defd03bd8d4377577c24f4a777bf29e",
         "type": "github"
       },
       "original": {
@@ -36,25 +34,38 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1789546076,
+        "narHash": "sha256-zVxLZiSnmaaPLwnhj7pwmqe3axBg/C6nG5JZsJMh2g4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b1b875982b17dabde9b4a37f3e229e74913e6db3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "mihomo-manager-mihomo-mixin": "mihomo-manager-mihomo-mixin",
-        "nixpkgs": "nixpkgs",
         "sub-nix": "sub-nix"
       }
     },
     "sub-nix": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1789652118,
-        "narHash": "sha256-vbt4j2m/0KktrETu9DMBfTw4MCoGQet+rj/L4TR7v80=",
+        "lastModified": 1789732162,
+        "narHash": "sha256-u6a9dg0wqftEMGIMRqNVJav+i7NezJgS/QC2Zt5o9FU=",
         "owner": "yueyinqiu",
         "repo": "SubNix",
-        "rev": "8a9c50d3bbb627a0b19ca04e8857f78d8cda3f4b",
+        "rev": "92403706549e584a397d2ab448715a82da9432ff",
         "type": "github"
       },
       "original": {

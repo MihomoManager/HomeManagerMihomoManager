@@ -2,7 +2,6 @@
   description = "Home Manager module for managing MihomoManager proxy instances";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     sub-nix.url = "github:yueyinqiu/SubNix";
     mihomo-manager-mihomo-mixin.url = "github:MihomoManager/MihomoManager.MihomoMixin-Nix";
   };
@@ -10,7 +9,6 @@
   outputs =
     {
       self,
-      nixpkgs,
       sub-nix,
       mihomo-manager-mihomo-mixin,
     }:
