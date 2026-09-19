@@ -16,7 +16,7 @@ Each declared instance gets:
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
-    home-manager-mihomo-manager.url = "github:yueyinqiu/HomeManagerMihomoManager";
+    home-manager-mihomo-manager.url = "github:MihomoManager/HomeManagerMihomoManager";
   };
 
   outputs = { nixpkgs, home-manager, home-manager-mihomo-manager, ... }:
