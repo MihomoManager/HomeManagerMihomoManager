@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  cli,
+  makeSubCli,
 }:
 
 let
@@ -11,7 +11,13 @@ in
 {
   home.packages = [
     pkgs.mihomo
-    cli
+    (import ./cli.nix {
+      config = config;
+      lib = lib;
+      pkgs = pkgs;
+      makeSubCli = makeSubCli;
+      cfg = cfg;
+    })
     cfg.mihomo-manager-mihomo-mixin
     cfg.mihomo-tui
   ];

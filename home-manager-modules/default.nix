@@ -22,13 +22,6 @@
       config = config;
       lib = lib;
       pkgs = pkgs;
-      cli = import ./cli.nix {
-        config = config;
-        lib = lib;
-        pkgs = pkgs;
-        makeSubCli = makeSubCli;
-        commdns = (import ./commands.nix { inherit config; });
-      };
     }
   );
 }

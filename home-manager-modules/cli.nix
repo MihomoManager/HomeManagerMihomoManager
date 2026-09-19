@@ -2,12 +2,11 @@
   config,
   lib,
   pkgs,
-  makeSubCli
+  makeSubCli,
+  cfg
 }:
 
 let
-  cfg = config.programs.home-manager-mihomo-manager;
-
   commands = name: {
     restart = ''
       #!/usr/bin/env bash
@@ -43,7 +42,11 @@ let
       printf "State Directory: %s\n" "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}"
     '';
   };
-
+in
+makeSubCli {
+  pname = "home-manager-mihomo-manager";
+  version = "";
+  sub = cfg.sub;
   src = pkgs.runCommand "home-manager-mihomo-manager-cli" { } (
     lib.concatMapStringsSep "\n" (
       name:
@@ -56,10 +59,4 @@ let
       '') (commands name)
     ) (builtins.attrNames cfg.instances)
   );
-in
-makeSubCli {
-  pname = "home-manager-mihomo-manager";
-  version = "";
-  sub = cfg.sub;
-  src = src;
 }
