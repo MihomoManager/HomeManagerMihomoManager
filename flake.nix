@@ -4,9 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     sub-nix.url = "github:yueyinqiu/SubNix";
-    sub-nix.inputs.nixpkgs.follows = "nixpkgs";
     mihomo-manager-mihomo-mixin.url = "github:MihomoManager/MihomoManager.MihomoMixin-Nix";
-    mihomo-manager-mihomo-mixin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
