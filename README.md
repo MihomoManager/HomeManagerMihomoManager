@@ -49,7 +49,8 @@ Each declared instance gets:
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `enable` | bool | `false` | Whether to enable the module |
-| `mixin` | package | built-in `mihomo-manager-mihomo-mixin` | Config merge tool |
+| `sub` | package | `SubNix` flake's `sub` | `sub` binary used to build the CLI |
+| `mihomo-manager-mihomo-mixin` | package | `MihomoManager.MihomoMixin-Nix` flake | Config merge tool |
 | `mihomo-tui` | package | built-in `mihomo-tui` | TUI used by the `tui` action |
 | `instances` | attrsOf submodule | `{ }` | Proxy instances to manage |
 
