@@ -79,6 +79,7 @@ in
         Description = "home-manager-mihomo-manager Service ${name}";
         After = [ "network-online.target" ];
         Wants = [ "network-online.target" ];
+        X-Restart-Triggers = [ (toString item.configuration) ];
       };
       Install.WantedBy = [ "default.target" ];
       Service = {
