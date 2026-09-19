@@ -25,29 +25,24 @@ in
   xdg.configFile = lib.mergeAttrsList (
     lib.mapAttrsToList (
       name: item:
-      builtins.listToAttrs (
-        map (file: {
-          name = "home-manager-mihomo-manager/${name}/${baseNameOf file}";
-          value = {
-            source = file;
+      {
+        "home-manager-mihomo-manager/${name}" = {
+          source = item.configuration;
+          recursive = true;
+        };
+      }
+      // {
+        "home-manager-mihomo-manager/${name}/home-manager-mihomo-manager.yaml" = {
+          text = builtins.toJSON {
+            proxies = lib.mapAttrsToList (n: it: {
+              name = "home-manager-mihomo-manager-${n}";
+              type = "socks5";
+              server = "127.0.0.1";
+              port = it.port;
+            }) cfg.instances;
           };
-        }) item.files
-        ++ [
-          {
-            name = "home-manager-mihomo-manager/${name}/home-manager-mihomo-manager.yaml";
-            value = {
-              text = builtins.toJSON {
-                proxies = lib.mapAttrsToList (n: it: {
-                  name = "home-manager-mihomo-manager-${n}";
-                  type = "socks5";
-                  server = "127.0.0.1";
-                  port = it.port;
-                }) cfg.instances;
-              };
-            };
-          }
-        ]
-      )
+        };
+      }
     ) cfg.instances
   );
 
@@ -68,7 +63,7 @@ in
           OUTPUT_PATH="/tmp/merged.yaml" \
           TEMP_DIRECTORY="/tmp/config-sh" \
           STATE_DIRECTORY="$STATE_DIRECTORY/config-sh" \
-          bash config.sh
+            bash ${item.entry}
 
         mkdir -p "$STATE_DIRECTORY/core"
         "${cfg.mihomo-manager-mihomo-mixin}/bin/MihomoManager.MihomoMixin" merge /tmp/merged.yaml merge "${portYaml}" save "$STATE_DIRECTORY/core/config.yaml"

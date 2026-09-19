@@ -42,12 +42,22 @@
               description = "Mixed port of the proxy instance.";
             };
 
-            files = lib.mkOption {
-              type = lib.types.listOf lib.types.path;
+            configuration = lib.mkOption {
+              type = lib.types.path;
               description = ''
-                Configuration files copied into the instance's config
-                directory (e.g. `config.sh.example`, JS mixin scripts, YAML
-                fragments).
+                Directory copied into the instance's config directory
+                (`~/.config/home-manager-mihomo-manager/<name>`). Typically
+                contains the generation script and its input files (JS
+                mixin scripts, YAML fragments).
+              '';
+            };
+
+            entry = lib.mkOption {
+              type = lib.types.str;
+              default = "config.sh";
+              description = ''
+                Name of the generation script inside the configuration
+                directory, run at service startup.
               '';
             };
           };

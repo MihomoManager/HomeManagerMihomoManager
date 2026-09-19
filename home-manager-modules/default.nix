@@ -22,6 +22,7 @@
       config = config;
       lib = lib;
       pkgs = pkgs;
+      makeSubCli = makeSubCli;
     }
   );
 }

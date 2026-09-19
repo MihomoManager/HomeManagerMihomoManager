@@ -35,10 +35,7 @@ Each declared instance gets:
 
     instances.example = {
       port = 42931;
-      files = [
-        ./config.sh.example
-        ./to-global.js
-      ];
+      configuration = ./config;
     };
   };
 }
@@ -59,7 +56,8 @@ Each `instances.<name>` accepts:
 | Name | Type | Description |
 | --- | --- | --- |
 | `port` | port | Mixed port of the instance |
-| `files` | list of path | Files copied into `~/.config/home-manager-mihomo-manager/<name>` |
+| `configuration` | path | Directory copied into `~/.config/home-manager-mihomo-manager/<name>` |
+| `entry` | str | Generation script inside `configuration`, defaults to `config.sh` |
 
 ## CLI
 
