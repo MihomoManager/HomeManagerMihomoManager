@@ -46,14 +46,6 @@ in
               };
             };
           }
-          {
-            name = "home-manager-mihomo-manager/${name}/restart.sh";
-            value = {
-              text = ''
-                systemctl --user restart "home-manager-mihomo-manager-${name}.service"
-              '';
-            };
-          }
         ]
       )
     ) cfg.instances
