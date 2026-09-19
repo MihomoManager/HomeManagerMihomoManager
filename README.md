@@ -9,35 +9,41 @@ Each declared instance gets:
 - a `home-manager-mihomo-manager` CLI (built on [sub](https://github.com/juanibiapina/sub)) with
   `restart`, `log`, `tui`, `with`, and `show` actions, plus dynamic bash completion.
 
-## Adding as a flake input
+## Usage
 
 ```nix
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    mihomo-manager.url = "github:yueyinqiu/HomeManagerMihomoManager";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager-mihomo-manager.url = "github:yueyinqiu/HomeManagerMihomoManager";
   };
 
-  outputs = { nixpkgs, mihomo-manager, ... }: {
-    homeConfigurations.alice = ...;
-  };
-}
-```
+  outputs = { nixpkgs, home-manager, home-manager-mihomo-manager, ... }:
+    let
+      system = "x86_64-linux";
+    in
+    {
+      homeConfigurations.alice = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        modules = [
+          home-manager-mihomo-manager.homeManagerModules.home-manager-mihomo-manager
+          {
+            home.username = "alice";
+            home.homeDirectory = "/home/alice";
+            home.stateVersion = "26.05";
 
-## Usage
-
-```nix
-{
-  imports = [ mihomo-manager.homeManagerModules.default ];
-
-  programs.home-manager-mihomo-manager = {
-    enable = true;
-
-    instances.example = {
-      port = 42931;
-      configuration = ./config;
+            programs.home-manager-mihomo-manager = {
+              enable = true;
+              instances.example = {
+                port = 42931;
+                configuration = ./config;
+              };
+            };
+          }
+        ];
+      };
     };
-  };
 }
 ```
 
