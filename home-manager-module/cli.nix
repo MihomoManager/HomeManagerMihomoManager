@@ -10,17 +10,17 @@ let
   commands = name: {
     restart = ''
       #!/usr/bin/env bash
-      systemctl --user restart "home-manager-mihomo-manager-${name}"
+      systemctl --user restart ${lib.escapeShellArg "home-manager-mihomo-manager-${name}"}
     '';
 
     log = ''
       #!/usr/bin/env bash
-      journalctl --user -u "home-manager-mihomo-manager-${name}"
+      journalctl --user -u ${lib.escapeShellArg "home-manager-mihomo-manager-${name}"}
     '';
 
     tui = ''
       #!/usr/bin/env bash
-      exec ${cfg.mihomo-tui}/bin/mihomo-tui -c "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}/tui/config.yaml"
+      exec "${cfg.mihomo-tui}/bin/mihomo-tui" -c ${lib.escapeShellArg "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}/tui/config.yaml"}
     '';
 
     "with" = ''
@@ -37,9 +37,9 @@ let
     show = ''
       #!/usr/bin/env bash
       printf "Port: %s\n" "${toString cfg.instances.${name}.port}"
-      printf "Service: %s\n" "home-manager-mihomo-manager-${name}"
-      printf "Configuration Directory: %s\n" "${config.xdg.configHome}/home-manager-mihomo-manager/${name}"
-      printf "State Directory: %s\n" "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}"
+      printf "Service: %s\n" ${lib.escapeShellArg "home-manager-mihomo-manager-${name}"}
+      printf "Configuration Directory: %s\n" ${lib.escapeShellArg "${config.xdg.configHome}/home-manager-mihomo-manager/${name}"}
+      printf "State Directory: %s\n" ${lib.escapeShellArg "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}"}
     '';
   };
 in
