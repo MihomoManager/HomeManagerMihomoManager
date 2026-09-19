@@ -51,7 +51,7 @@ in
       runner = pkgs.writeShellApplication {
         name = "home-manager-mihomo-manager-${name}-run";
         text = ''
-          cd "${config.xdg.configHome}/home-manager-mihomo-manager/${name}"
+          cd ${lib.escapeShellArg "${config.xdg.configHome}/home-manager-mihomo-manager/${name}"}
           mkdir -p "/tmp/entry"
           mkdir -p "$STATE_DIRECTORY/entry"
           HOME_MANAGER_MIHOMO_MANAGER_PROXIES="${proxiesList}" \
@@ -59,7 +59,7 @@ in
             OUTPUT_PATH="/tmp/merged.yaml" \
             TEMP_DIRECTORY="/tmp/entry" \
             STATE_DIRECTORY="$STATE_DIRECTORY/entry" \
-            bash ${item.entry}
+            bash ${lib.escapeShellArg item.entry}
 
           mkdir -p "$STATE_DIRECTORY/core"
           "${cfg.mihomo-manager-mihomo-mixin}/bin/MihomoManager.MihomoMixin" merge /tmp/merged.yaml merge "${portYaml}" save "$STATE_DIRECTORY/core/config.yaml"
@@ -79,6 +79,7 @@ in
         Description = "home-manager-mihomo-manager Service ${name}";
         After = [ "network-online.target" ];
         Wants = [ "network-online.target" ];
+        X-Restart-Triggers = [ (toString item.configuration) ];
       };
       Install.WantedBy = [ "default.target" ];
       Service = {
