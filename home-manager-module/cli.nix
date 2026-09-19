@@ -51,11 +51,13 @@ makeSubCli {
     lib.concatMapStringsSep "\n" (
       name:
       lib.concatMapAttrsStringSep "\n" (action: text: ''
-        mkdir -p "$out/libexec/${action}"
-        cat > "$out/libexec/${action}/${name}" <<'EOF'
+        dir="$out/libexec/${action}"
+        file="$dir/"${lib.escapeShellArg name}
+        mkdir -p "$dir"
+        cat > "$file" <<'EOF'
         ${text}
         EOF
-        chmod +x "$out/libexec/${action}/${name}"
+        chmod +x "$file"
       '') (commands name)
     ) (builtins.attrNames cfg.instances)
   );
