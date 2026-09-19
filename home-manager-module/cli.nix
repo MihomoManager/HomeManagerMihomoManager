@@ -15,7 +15,7 @@ let
 
     log = ''
       #!/usr/bin/env bash
-      journalctl --user -uf "home-manager-mihomo-manager-${name}"
+      journalctl --user -u "home-manager-mihomo-manager-${name}"
     '';
 
     tui = ''
