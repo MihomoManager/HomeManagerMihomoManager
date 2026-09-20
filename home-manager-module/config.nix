@@ -83,6 +83,7 @@ in
           (builtins.path {
             path = item.configuration;
             name = "home-manager-mihomo-manager-${name}-configuration";
+            recursive = true;
           })
         ];
       };
