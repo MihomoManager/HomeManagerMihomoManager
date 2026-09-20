@@ -79,13 +79,7 @@ in
         Description = "home-manager-mihomo-manager Service ${name}";
         After = [ "network-online.target" ];
         Wants = [ "network-online.target" ];
-        X-Restart-Triggers = [
-          (builtins.path {
-            path = item.configuration;
-            name = "home-manager-mihomo-manager-${name}-configuration";
-            recursive = true;
-          })
-        ];
+        X-Restart-Triggers = [ "${item.configuration}" ];
       };
       Install.WantedBy = [ "default.target" ];
       Service = {
