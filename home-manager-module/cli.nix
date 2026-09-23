@@ -7,23 +7,23 @@
 }:
 
 let
-  commands = name: {
-    restart = ''
+  actions = {
+    restart = name: ''
       #!/usr/bin/env bash
       systemctl --user restart ${lib.escapeShellArg "home-manager-mihomo-manager-${name}"}
     '';
 
-    log = ''
+    log = name: ''
       #!/usr/bin/env bash
       journalctl --user -u ${lib.escapeShellArg "home-manager-mihomo-manager-${name}"}
     '';
 
-    tui = ''
+    tui = name: ''
       #!/usr/bin/env bash
       exec "${cfg.mihomo-tui}/bin/mihomo-tui" -c ${lib.escapeShellArg "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}/tui/config.yaml"}
     '';
 
-    "with" = ''
+    "with" = name: ''
       #!/usr/bin/env bash
       export ALL_PROXY="http://127.0.0.1:${toString cfg.instances.${name}.port}"
       export HTTP_PROXY="$ALL_PROXY"
@@ -34,7 +34,7 @@ let
       exec "$@"
     '';
 
-    show = ''
+    show = name: ''
       #!/usr/bin/env bash
       printf "Port: %s\n" "${toString cfg.instances.${name}.port}"
       printf "Service: %s\n" ${lib.escapeShellArg "home-manager-mihomo-manager-${name}"}
@@ -42,23 +42,41 @@ let
       printf "State Directory: %s\n" ${lib.escapeShellArg "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}"}
     '';
   };
+
+  list = ''
+    #!/usr/bin/env bash
+    ${lib.concatMapStringsSep "\n" (name: ''
+      printf "%s\n" ${lib.escapeShellArg name}
+    '') (builtins.attrNames cfg.instances)}
+  '';
 in
 makeSubCli {
   pname = "home-manager-mihomo-manager";
   version = "";
   sub = cfg.sub;
   src = pkgs.runCommand "home-manager-mihomo-manager-cli" { } (
-    lib.concatMapStringsSep "\n" (
+    ''
+      mkdir -p "$out/libexec"
+      ${lib.concatMapStringsSep "\n" (action: ''
+        mkdir -p "$out/libexec/${action}"
+      '') (builtins.attrNames actions)}
+
+      cat > "$out/libexec/list" <<'EOF'
+      ${list}
+      EOF
+      chmod +x "$out/libexec/list"
+    ''
+    + (lib.concatMapStringsSep "\n" (
       name:
-      lib.concatMapAttrsStringSep "\n" (action: text: ''
+      lib.concatMapAttrsStringSep "\n" (action: script: ''
         dir="$out/libexec/${action}"
         file="$dir/"${lib.escapeShellArg name}
         mkdir -p "$dir"
         cat > "$file" <<'EOF'
-        ${text}
+        ${script name}
         EOF
         chmod +x "$file"
-      '') (commands name)
-    ) (builtins.attrNames cfg.instances)
+      '') actions
+    ) (builtins.attrNames cfg.instances))
   );
 }
