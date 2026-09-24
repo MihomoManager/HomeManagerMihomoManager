@@ -51,7 +51,7 @@ let
   '';
 in
 makeSubCli {
-  pname = "home-manager-mihomo-manager";
+  pname = "mihomo-manager";
   version = "";
   sub = cfg.sub;
   src = pkgs.runCommand "home-manager-mihomo-manager-cli" { } (
