@@ -33,7 +33,7 @@ Each declared instance gets:
             home.homeDirectory = "/home/alice";
             home.stateVersion = "26.05";
 
-            programs.home-manager-mihomo-manager = {
+            home-manager-mihomo-manager = {
               enable = true;
               instances.example = {
                 port = 42931;
