@@ -17,7 +17,7 @@
     })
   ];
 
-  config = lib.mkIf config.programs.home-manager-mihomo-manager.enable (
+  config = lib.mkIf config.home-manager-mihomo-manager.enable (
     import ./config.nix {
       config = config;
       lib = lib;

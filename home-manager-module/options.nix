@@ -5,7 +5,7 @@
   mihomo-manager-mihomo-mixin-package,
 }:
 {
-  options.programs.home-manager-mihomo-manager = {
+  options.home-manager-mihomo-manager = {
     enable = lib.mkEnableOption "MihomoManager proxy instances";
 
     sub = lib.mkOption {

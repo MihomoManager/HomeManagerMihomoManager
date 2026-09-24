@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.programs.home-manager-mihomo-manager;
+  cfg = config.home-manager-mihomo-manager;
 
   proxiesList = pkgs.writeText "home-manager-mihomo-manager-proxies.yaml" (
     builtins.toJSON {
