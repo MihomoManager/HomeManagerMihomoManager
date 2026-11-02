@@ -11,7 +11,7 @@ let
   proxiesList = pkgs.writeText "home-manager-mihomo-manager-proxies.yaml" (
     builtins.toJSON {
       proxies = lib.mapAttrsToList (n: it: {
-        name = "home-manager-mihomo-manager-${n}";
+        name = "hmmm-${n}";
         type = "socks5";
         server = "127.0.0.1";
         port = it.port;
