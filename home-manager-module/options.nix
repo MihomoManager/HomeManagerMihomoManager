@@ -16,6 +16,14 @@
       '';
     };
 
+    mihomo = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.mihomo;
+      description = ''
+        The `mihomo` package used to run proxy instances.
+      '';
+    };
+
     mihomo-manager-mihomo-mixin = lib.mkOption {
       type = lib.types.package;
       default = mihomo-manager-mihomo-mixin-package;

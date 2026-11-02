@@ -21,7 +21,7 @@ let
 in
 {
   home.packages = [
-    pkgs.mihomo
+    cfg.mihomo
     (import ./cli.nix {
       config = config;
       lib = lib;
@@ -70,7 +70,7 @@ in
           printf 'mihomo-api: unix:%s\n' "$SOCKET" > "$STATE_DIRECTORY/tui/config.yaml"
 
           cd "$STATE_DIRECTORY/core"
-          SAFE_PATHS="$STATE_DIRECTORY" exec "${pkgs.mihomo}/bin/mihomo" -d . -ext-ctl-unix "$SOCKET"
+          SAFE_PATHS="$STATE_DIRECTORY" exec "${cfg.mihomo}/bin/mihomo" -d . -ext-ctl-unix "$SOCKET"
         '';
       };
     in
