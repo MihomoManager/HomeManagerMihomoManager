@@ -20,7 +20,7 @@ let
 
     tui = name: ''
       #!/usr/bin/env bash
-      exec "${cfg.mihomo-tui}/bin/mihomo-tui" -c ${lib.escapeShellArg "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}/tui/config.yaml"}
+      exec "${cfg.mihomo-tui.package}/bin/mihomo-tui" -c ${lib.escapeShellArg "${config.xdg.stateHome}/home-manager-mihomo-manager/state/${name}/tui/config.yaml"}
     '';
 
     "with" = name: ''

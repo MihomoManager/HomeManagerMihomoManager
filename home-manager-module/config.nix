@@ -11,7 +11,7 @@ let
   proxiesList = pkgs.writeText "home-manager-mihomo-manager-proxies.yaml" (
     builtins.toJSON {
       proxies = lib.mapAttrsToList (n: it: {
-        name = "home-manager-mihomo-manager-${n}";
+        name = "hmmm-${n}";
         type = "socks5";
         server = "127.0.0.1";
         port = it.port;
@@ -20,18 +20,19 @@ let
   );
 in
 {
-  home.packages = [
-    pkgs.mihomo
-    (import ./cli.nix {
-      config = config;
-      lib = lib;
-      pkgs = pkgs;
-      makeSubCli = makeSubCli;
-      cfg = cfg;
-    })
-    cfg.mihomo-manager-mihomo-mixin
-    cfg.mihomo-tui
-  ];
+  home.packages =
+    [
+      (import ./cli.nix {
+        config = config;
+        lib = lib;
+        pkgs = pkgs;
+        makeSubCli = makeSubCli;
+        cfg = cfg;
+      })
+    ]
+    ++ lib.optionals cfg.mihomo.install [ cfg.mihomo.package ]
+    ++ lib.optionals cfg.mihomo-manager-mihomo-mixin.install [ cfg.mihomo-manager-mihomo-mixin.package ]
+    ++ lib.optionals cfg.mihomo-tui.install [ cfg.mihomo-tui.package ];
 
   xdg.configFile = lib.mapAttrs' (
     name: item:
@@ -55,14 +56,14 @@ in
           mkdir -p "/tmp/entry"
           mkdir -p "$STATE_DIRECTORY/entry"
           HOME_MANAGER_MIHOMO_MANAGER_PROXIES="${proxiesList}" \
-            MMMM="${cfg.mihomo-manager-mihomo-mixin}/bin/MihomoManager.MihomoMixin" \
+            MMMM="${cfg.mihomo-manager-mihomo-mixin.package}/bin/MihomoManager.MihomoMixin" \
             OUTPUT_PATH="/tmp/merged.yaml" \
             TEMP_DIRECTORY="/tmp/entry" \
             STATE_DIRECTORY="$STATE_DIRECTORY/entry" \
             bash ${lib.escapeShellArg item.entry}
 
           mkdir -p "$STATE_DIRECTORY/core"
-          "${cfg.mihomo-manager-mihomo-mixin}/bin/MihomoManager.MihomoMixin" merge /tmp/merged.yaml merge "${portYaml}" save "$STATE_DIRECTORY/core/config.yaml"
+          "${cfg.mihomo-manager-mihomo-mixin.package}/bin/MihomoManager.MihomoMixin" merge /tmp/merged.yaml merge "${portYaml}" save "$STATE_DIRECTORY/core/config.yaml"
 
           SOCKET="$RUNTIME_DIRECTORY/mihomo.sock"
 
@@ -70,7 +71,7 @@ in
           printf 'mihomo-api: unix:%s\n' "$SOCKET" > "$STATE_DIRECTORY/tui/config.yaml"
 
           cd "$STATE_DIRECTORY/core"
-          SAFE_PATHS="$STATE_DIRECTORY" exec "${pkgs.mihomo}/bin/mihomo" -d . -ext-ctl-unix "$SOCKET"
+          SAFE_PATHS="$STATE_DIRECTORY" exec "${cfg.mihomo.package}/bin/mihomo" -d . -ext-ctl-unix "$SOCKET"
         '';
       };
     in

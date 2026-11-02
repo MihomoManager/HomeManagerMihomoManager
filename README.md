@@ -53,8 +53,12 @@ Each declared instance gets:
 | --- | --- | --- | --- |
 | `enable` | bool | `false` | Whether to enable the module |
 | `sub` | package | `SubNix` flake's `sub` | `sub` binary used to build the CLI |
-| `mihomo-manager-mihomo-mixin` | package | `MihomoManager.MihomoMixin-Nix` flake | Config merge tool |
-| `mihomo-tui` | package | built-in `mihomo-tui` | TUI used by the `tui` action |
+| `mihomo.package` | package | `pkgs.mihomo` | `mihomo` package used to run proxy instances |
+| `mihomo.install` | bool | `false` | Whether to add `mihomo.package` to `home.packages` |
+| `mihomo-manager-mihomo-mixin.package` | package | `MihomoManager.MihomoMixin-Nix` flake | Config merge tool |
+| `mihomo-manager-mihomo-mixin.install` | bool | `false` | Whether to add the mixin package to `home.packages` |
+| `mihomo-tui.package` | package | built-in `mihomo-tui` | TUI used by the `tui` action |
+| `mihomo-tui.install` | bool | `false` | Whether to add the `mihomo-tui` package to `home.packages` |
 | `instances` | attrsOf submodule | `{ }` | Proxy instances to manage |
 
 Each `instances.<name>` accepts:

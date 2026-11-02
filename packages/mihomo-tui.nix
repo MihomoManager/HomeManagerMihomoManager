@@ -1,38 +1,51 @@
+# https://github.com/NixOS/nixpkgs/pull/547113
+
 {
   lib,
   rustPlatform,
   fetchFromGitHub,
-  nix-update-script,
+  versionCheckHook,
+  writableTmpDirAsHomeHook,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "mihomo-tui";
-  version = "0.4.5";
+  version = "0.6.0";
+
   __structuredAttrs = true;
 
   src = fetchFromGitHub {
     owner = "potoo0";
     repo = "mihomo-tui";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-tNeH4HnpUL6UipDtSTfQLcT0ruwkUkho5+M6Mlj5E4c=";
+    hash = "sha256-w0W0J/SsEw6go5eRcLzEbGTh4JMxlp4pWjrTddFfpvc=";
   };
 
-  cargoHash = "sha256-JOa5otMJE1GqpGnsIvY/O4ps0N3N1wpepESigY0+Dic=";
-  RUSTFLAGS = "--cfg tokio_unstable";
+  cargoHash = "sha256-wHuf+dlqAsD63gJH44w6r3+sPMJdFYxSReuqW8NCyng=";
 
   env = {
-    VERGEN_GIT_DESCRIBE = "";
-    VERGEN_BUILD_DATE = "";
+    RUSTFLAGS = "--cfg tokio_unstable";
+    VERGEN_GIT_DESCRIBE = "v${finalAttrs.version}";
+    VERGEN_BUILD_DATE = "2026-10-31";
+    VERGEN_DEFAULT_ON_ERROR = "1";
   };
 
-  passthru.updateScript = nix-update-script { };
+  __darwinAllowLocalNetworking = true;
+
+  nativeInstallCheckInputs = [
+    writableTmpDirAsHomeHook
+    versionCheckHook
+  ];
+  versionCheckKeepEnvironment = [ "HOME" ];
+  doInstallCheck = true;
 
   meta = {
-    description = "A simple TUI dashboard for monitoring and managing Mihomo via its REST API";
+    description = "Simple TUI dashboard for monitoring and managing Mihomo via its REST API";
     homepage = "https://github.com/potoo0/mihomo-tui";
-    changelog = "https://github.com/potoo0/mihomo-tui/blob/${finalAttrs.src.rev}/CHANGELOG.md";
+    changelog = "https://github.com/potoo0/mihomo-tui/blob/${finalAttrs.src.tag}/CHANGELOG.md";
     license = lib.licenses.mit;
     maintainers = [ ];
     mainProgram = "mihomo-tui";
+    platforms = lib.platforms.linux ++ lib.platforms.darwin;
   };
 })

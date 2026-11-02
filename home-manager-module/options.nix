@@ -16,21 +16,60 @@
       '';
     };
 
-    mihomo-manager-mihomo-mixin = lib.mkOption {
-      type = lib.types.package;
-      default = mihomo-manager-mihomo-mixin-package;
-      description = ''
-        The MihomoManager.MihomoMixin package used to merge proxy
-        configuration at service startup.
-      '';
+    mihomo = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.mihomo;
+        description = ''
+          The `mihomo` package used to run proxy instances.
+        '';
+      };
+
+      install = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = ''
+          Whether to add `mihomo.package` to `home.packages`.
+        '';
+      };
     };
 
-    mihomo-tui = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.callPackage ../packages/mihomo-tui.nix { };
-      description = ''
-        The mihomo-tui package used by the `tui` action.
-      '';
+    mihomo-manager-mihomo-mixin = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = mihomo-manager-mihomo-mixin-package;
+        description = ''
+          The MihomoManager.MihomoMixin package used to merge proxy
+          configuration at service startup.
+        '';
+      };
+
+      install = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = ''
+          Whether to add `mihomo-manager-mihomo-mixin.package` to
+          `home.packages`.
+        '';
+      };
+    };
+
+    mihomo-tui = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.callPackage ../packages/mihomo-tui.nix { };
+        description = ''
+          The mihomo-tui package used by the `tui` action.
+        '';
+      };
+
+      install = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = ''
+          Whether to add `mihomo-tui.package` to `home.packages`.
+        '';
+      };
     };
 
     instances = lib.mkOption {
