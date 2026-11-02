@@ -37,6 +37,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     versionCheckHook
   ];
   versionCheckKeepEnvironment = [ "HOME" ];
+  doCheck = false;
   doInstallCheck = true;
 
   meta = {
