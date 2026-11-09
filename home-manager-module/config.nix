@@ -15,6 +15,7 @@ let
         type = "socks5";
         server = "127.0.0.1";
         port = it.port;
+        udp = true;
       }) cfg.instances;
     }
   );
