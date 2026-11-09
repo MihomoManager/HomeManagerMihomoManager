@@ -57,7 +57,7 @@
     mihomo-tui = {
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.callPackage ../packages/mihomo-tui.nix { };
+        default = pkgs.mihomo-tui;
         description = ''
           The mihomo-tui package used by the `tui` action.
         '';
