@@ -57,7 +57,7 @@ Each declared instance gets:
 | `mihomo.install` | bool | `false` | Whether to add `mihomo.package` to `home.packages` |
 | `mihomo-manager-mihomo-mixin.package` | package | `MihomoManager.MihomoMixin-Nix` flake | Config merge tool |
 | `mihomo-manager-mihomo-mixin.install` | bool | `false` | Whether to add the mixin package to `home.packages` |
-| `mihomo-tui.package` | package | built-in `mihomo-tui` | TUI used by the `tui` action |
+| `mihomo-tui.package` | package | `pkgs.mihomo-tui` | TUI used by the `tui` action |
 | `mihomo-tui.install` | bool | `false` | Whether to add the `mihomo-tui` package to `home.packages` |
 | `instances` | attrsOf submodule | `{ }` | Proxy instances to manage |
 
